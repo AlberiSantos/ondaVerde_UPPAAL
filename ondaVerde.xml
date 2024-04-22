@@ -4,7 +4,7 @@
 	<declaration>const int N = 4;  // # Semáforos
 typedef int[0,N-1] id_t;
 
-//chan verde[N], amarelo[N], vermelho[N];</declaration>
+chan verde, amarelo;</declaration>
 	<template>
 		<name x="5" y="5">Semaforo</name>
 		<parameter>const id_t id</parameter>
@@ -26,8 +26,9 @@ const int tempoVermelho = 55;</declaration>
 		<transition id="id3">
 			<source ref="id2"/>
 			<target ref="id0"/>
-			<label kind="guard" x="-408" y="-153">x&gt;=tempoVermelho</label>
-			<label kind="assignment" x="-296" y="-123">x=0</label>
+			<label kind="guard" x="-408" y="-136">x&gt;=tempoVermelho</label>
+			<label kind="synchronisation" x="-331" y="-119">verde !</label>
+			<label kind="assignment" x="-408" y="-119">x=0</label>
 		</transition>
 		<transition id="id4">
 			<source ref="id1"/>
@@ -39,19 +40,42 @@ const int tempoVermelho = 55;</declaration>
 			<source ref="id0"/>
 			<target ref="id1"/>
 			<label kind="guard" x="-272" y="-221">x&gt;=tempoVerde</label>
-			<label kind="assignment" x="-246" y="-195">x=0</label>
+			<label kind="synchronisation" x="-212" y="-195">amarelo !</label>
+			<label kind="assignment" x="-272" y="-195">x=0</label>
 		</transition>
 	</template>
 	<template>
-		<name>Carro</name>
-		<location id="id6" x="0" y="0">
+		<name>Veiculo</name>
+		<declaration>clock y; // Relógio para controlar a movimentação do carro
+
+const int velocidade = 11; // Velocidade do carro em metros/segundo
+// Tempos estimados de chegada em cada semáforo baseado na distância e na velocidade
+int tempoChegadaSemaforo1 = 108;
+int tempoChegadaSemaforo2 = 11;
+int tempoChegadaSemaforo3 = 14;
+int tempoChegadaSemaforo4 = 15;</declaration>
+		<location id="id6" x="-238" y="-136">
+			<name x="-248" y="-170">Conduzindo</name>
+		</location>
+		<location id="id7" x="-238" y="-51">
+			<name x="-229" y="-43">Esperando</name>
 		</location>
 		<init ref="id6"/>
+		<transition id="id8">
+			<source ref="id7"/>
+			<target ref="id6"/>
+			<label kind="synchronisation" x="-340" y="-102">verde?</label>
+			<nail x="-289" y="-93"/>
+		</transition>
+		<transition id="id9">
+			<source ref="id6"/>
+			<target ref="id7"/>
+			<label kind="synchronisation" x="-187" y="-102">amarelo?</label>
+			<nail x="-187" y="-93"/>
+		</transition>
 	</template>
-	<system>// Place template instantiations here.
-Process = Template();
-// List one or more processes to be composed into a system.
-system Process;
+	<system>
+system Semaforo, Veiculo;
 </system>
 	<queries>
 		<query>
