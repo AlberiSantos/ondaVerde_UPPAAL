@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE nta PUBLIC '-//Uppaal Team//DTD Flat System 1.6//EN' 'http://www.it.uu.se/research/group/darts/uppaal/flat-1_6.dtd'>
+<nta>
+	<declaration>const int N = 4;  // # Semáforos
+typedef int[0,N-1] id_t;
+
+//chan verde[N], amarelo[N], vermelho[N];</declaration>
+	<template>
+		<name x="5" y="5">Semaforo</name>
+		<parameter>const id_t id</parameter>
+		<declaration>clock x;
+
+const int tempoVerde = 50; 
+const int tempoAmarelo = 5;
+const int tempoVermelho = 55;</declaration>
+		<location id="id0" x="-314" y="-195">
+			<name x="-340" y="-229">Verde</name>
+		</location>
+		<location id="id1" x="-110" y="-195">
+			<name x="-136" y="-238">Amarelo</name>
+		</location>
+		<location id="id2" x="-212" y="-51">
+			<name x="-246" y="-34">Vermelho</name>
+		</location>
+		<init ref="id2"/>
+		<transition id="id3">
+			<source ref="id2"/>
+			<target ref="id0"/>
+			<label kind="guard" x="-408" y="-153">x&gt;=tempoVermelho</label>
+			<label kind="assignment" x="-296" y="-123">x=0</label>
+		</transition>
+		<transition id="id4">
+			<source ref="id1"/>
+			<target ref="id2"/>
+			<label kind="guard" x="-153" y="-136">x&gt;=tempoAmarelo</label>
+			<label kind="assignment" x="-153" y="-119">x=0</label>
+		</transition>
+		<transition id="id5">
+			<source ref="id0"/>
+			<target ref="id1"/>
+			<label kind="guard" x="-272" y="-221">x&gt;=tempoVerde</label>
+			<label kind="assignment" x="-246" y="-195">x=0</label>
+		</transition>
+	</template>
+	<template>
+		<name>Carro</name>
+		<location id="id6" x="0" y="0">
+		</location>
+		<init ref="id6"/>
+	</template>
+	<system>// Place template instantiations here.
+Process = Template();
+// List one or more processes to be composed into a system.
+system Process;
+</system>
+	<queries>
+		<query>
+			<formula/>
+			<comment/>
+		</query>
+	</queries>
+</nta>
