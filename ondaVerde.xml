@@ -1,18 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE nta PUBLIC '-//Uppaal Team//DTD Flat System 1.6//EN' 'http://www.it.uu.se/research/group/darts/uppaal/flat-1_6.dtd'>
 <nta>
-	<declaration>const int N = 4;  // # Semáforos
+	<declaration>clock time;
+const int N = 4;  // # Semáforos
 typedef int[0,N-1] id_t;
 
-chan verde, amarelo;</declaration>
+chan verde, vermelho, partida;
+
+</declaration>
 	<template>
 		<name x="5" y="5">Semaforo</name>
 		<parameter>const id_t id</parameter>
-		<declaration>clock x;
+		<declaration>clock x; // Relógio para controlar o semáforo
 
-const int tempoVerde = 50; 
-const int tempoAmarelo = 5;
-const int tempoVermelho = 55;</declaration>
+const int tempoVerde = 20; 
+const int tempoAmarelo = 3;
+const int tempoVermelho = 30;
+</declaration>
 		<location id="id0" x="-314" y="-195">
 			<name x="-340" y="-229">Verde</name>
 		</location>
@@ -26,56 +30,144 @@ const int tempoVermelho = 55;</declaration>
 		<transition id="id3">
 			<source ref="id2"/>
 			<target ref="id0"/>
-			<label kind="guard" x="-408" y="-136">x&gt;=tempoVermelho</label>
-			<label kind="synchronisation" x="-331" y="-119">verde !</label>
-			<label kind="assignment" x="-408" y="-119">x=0</label>
+			<label kind="guard" x="-425" y="-161">x&gt;=tempoVermelho</label>
+			<label kind="synchronisation" x="-425" y="-127">verde!</label>
+			<label kind="assignment" x="-425" y="-144">x=0</label>
 		</transition>
 		<transition id="id4">
 			<source ref="id1"/>
 			<target ref="id2"/>
-			<label kind="guard" x="-153" y="-136">x&gt;=tempoAmarelo</label>
-			<label kind="assignment" x="-153" y="-119">x=0</label>
+			<label kind="guard" x="-144" y="-136">x&gt;=tempoAmarelo</label>
+			<label kind="synchronisation" x="-144" y="-119">vermelho !</label>
+			<label kind="assignment" x="-144" y="-102">x=0</label>
 		</transition>
 		<transition id="id5">
 			<source ref="id0"/>
 			<target ref="id1"/>
 			<label kind="guard" x="-272" y="-221">x&gt;=tempoVerde</label>
-			<label kind="synchronisation" x="-212" y="-195">amarelo !</label>
-			<label kind="assignment" x="-272" y="-195">x=0</label>
+			<label kind="assignment" x="-229" y="-238">x=0</label>
 		</transition>
 	</template>
 	<template>
 		<name>Veiculo</name>
 		<declaration>clock y; // Relógio para controlar a movimentação do carro
 
-const int velocidade = 11; // Velocidade do carro em metros/segundo
-// Tempos estimados de chegada em cada semáforo baseado na distância e na velocidade
-int tempoChegadaSemaforo1 = 108;
-int tempoChegadaSemaforo2 = 11;
-int tempoChegadaSemaforo3 = 14;
-int tempoChegadaSemaforo4 = 15;</declaration>
-		<location id="id6" x="-238" y="-136">
-			<name x="-248" y="-170">Conduzindo</name>
+const int velocidade = 11; // Velocidade do carro em metros/segundo 11,11
+// Tempos, em segundos,  estimados de chegada em cada semáforo baseado na distância e na velocidade
+int tempoChegadaSemaforo1 = 108; 
+int tempoChegadaSemaforo2 = 120;
+int tempoChegadaSemaforo3 = 134;
+int tempoChegadaSemaforo4 = 149;
+
+</declaration>
+		<location id="id6" x="-365" y="161">
+			<name x="-399" y="178">Esperando</name>
 		</location>
-		<location id="id7" x="-238" y="-51">
-			<name x="-229" y="-43">Esperando</name>
+		<location id="id7" x="-365" y="-110">
+			<name x="-357" y="-144">Conduzindo</name>
+			<urgent/>
+		</location>
+		<location id="id8" x="-365" y="-229">
+			<name x="-348" y="-237">Parada</name>
+		</location>
+		<location id="id9" x="-59" y="-110">
+			<name x="-93" y="-93">ProxDoSinal1</name>
+		</location>
+		<location id="id10" x="-246" y="76">
+			<name x="-280" y="85">ProxDoSinal2</name>
+		</location>
+		<location id="id11" x="-552" y="68">
+			<name x="-603" y="85">ProxDoSinal3</name>
+		</location>
+		<location id="id12" x="-671" y="-102">
+			<name x="-713" y="-136">ProxDoSinal4</name>
 		</location>
 		<init ref="id6"/>
-		<transition id="id8">
-			<source ref="id7"/>
+		<transition id="id13">
+			<source ref="id12"/>
 			<target ref="id6"/>
-			<label kind="synchronisation" x="-340" y="-102">verde?</label>
-			<nail x="-289" y="-93"/>
+			<nail x="-671" y="161"/>
 		</transition>
-		<transition id="id9">
+		<transition id="id14">
+			<source ref="id11"/>
+			<target ref="id6"/>
+		</transition>
+		<transition id="id15">
+			<source ref="id10"/>
+			<target ref="id6"/>
+		</transition>
+		<transition id="id16">
+			<source ref="id11"/>
+			<target ref="id7"/>
+			<label kind="synchronisation" x="-467" y="-17">verde?</label>
+		</transition>
+		<transition id="id17">
+			<source ref="id12"/>
+			<target ref="id7"/>
+			<label kind="synchronisation" x="-561" y="-102">verde?</label>
+		</transition>
+		<transition id="id18">
+			<source ref="id8"/>
+			<target ref="id7"/>
+		</transition>
+		<transition id="id19">
+			<source ref="id10"/>
+			<target ref="id7"/>
+			<label kind="synchronisation" x="-314" y="-42">verde?</label>
+		</transition>
+		<transition id="id20">
+			<source ref="id7"/>
+			<target ref="id10"/>
+			<label kind="guard" x="-365" y="25">y&gt;=tempoChegadaSemaforo2</label>
+			<nail x="-340" y="-25"/>
+		</transition>
+		<transition id="id21">
+			<source ref="id7"/>
+			<target ref="id11"/>
+			<label kind="guard" x="-595" y="-51">y&gt;=tempoChegadaSemaforo3</label>
+			<nail x="-467" y="-51"/>
+		</transition>
+		<transition id="id22">
+			<source ref="id7"/>
+			<target ref="id12"/>
+			<label kind="guard" x="-612" y="-153">y&gt;=tempoChegadaSemaforo4</label>
+			<nail x="-518" y="-127"/>
+		</transition>
+		<transition id="id23">
+			<source ref="id7"/>
+			<target ref="id8"/>
+			<nail x="-425" y="-170"/>
+		</transition>
+		<transition id="id24">
 			<source ref="id6"/>
 			<target ref="id7"/>
-			<label kind="synchronisation" x="-187" y="-102">amarelo?</label>
-			<nail x="-187" y="-93"/>
+		</transition>
+		<transition id="id25">
+			<source ref="id9"/>
+			<target ref="id6"/>
+			<label kind="synchronisation" x="-51" y="68">vermelho?</label>
+			<nail x="-59" y="161"/>
+		</transition>
+		<transition id="id26">
+			<source ref="id9"/>
+			<target ref="id7"/>
+			<label kind="synchronisation" x="-238" y="-153">verde?</label>
+			<nail x="-212" y="-136"/>
+		</transition>
+		<transition id="id27">
+			<source ref="id7"/>
+			<target ref="id9"/>
+			<label kind="guard" x="-306" y="-93">y&gt;=tempoChegadaSemaforo1</label>
+			<nail x="-212" y="-93"/>
 		</transition>
 	</template>
-	<system>
+	<system>const int t1 = 0;
+const int t2 = 11;
+const int t3 = 25;
+const int t4 = 40;
+
 system Semaforo, Veiculo;
+
 </system>
 	<queries>
 		<query>
