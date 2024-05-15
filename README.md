@@ -140,7 +140,7 @@ void initialize()
 }
 ```
 
-#### Cabeça da Fila
+#### Primeiro da Fila
 
 Retorna o primeiro controlador na fila.
 
@@ -205,9 +205,6 @@ A imagem do mapa ilustra o trajeto real com a localização dos quatro semáforo
 
 A ilustração detalha as distâncias entre os semáforos e a velocidade média necessária para que o veículo atinja o objetivo da onda verde. É uma representação visual do desafio a ser enfrentado na modelagem do sistema.
 
-## Simulação e Verificação
-
-Para observar o comportamento do sistema e verificar a eficácia da onda verde, carregue o arquivo `ondaVerde.xml` no UPPAAL. Utilize as ferramentas de simulação para testar cenários variados e a ferramenta de verificação de modelo para garantir que o sistema atende aos requisitos de design.
 
 ## Documentação
 
