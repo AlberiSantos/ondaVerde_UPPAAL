@@ -1,5 +1,7 @@
 # Projeto Onda Verde do Professor Kyller
 
+Link para o vídeo: 
+
 ## Descrição
 
 Este projeto apresenta uma modelagem detalhada de um sistema de semáforos otimizado na ferramenta UPPAAL. O cenário é baseado no trajeto real entre o posto de gasolina em frente à UFCG (Universidade Federal de Campina Grande) e o estabelecimento Rota Universitária. A meta é sincronizar os semáforos de tal maneira que um veículo, ao percorrer a rota a uma velocidade média de 40 km/h, seja obrigado a parar no máximo uma vez devido à sinalização vermelha.
